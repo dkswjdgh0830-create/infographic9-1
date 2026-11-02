@@ -14,22 +14,22 @@
    프레임마다 그해의 스크린 — 안개 = EPU, 로맨스 장면의 넓이 = 점유율. 경향선에서 먼 해에는 빨간 그리스 펜슬 표시.
    흰 인화지 + 검은 필름 + 파란 펜(동작 하나) + 빨간 펜슬(표시만). */
 :root{
-  --bg:#ffffff; --surface:#f4f4f4; --ink:#111111; --muted:#6b6b6b; --line:#e3e3e3;
-  --accent:#1a4be0; --accent-ink:#ffffff;
+  --bg:#0d0d0d; --surface:#161616; --ink:#f2f2f2; --muted:#a3a3a3; --line:#2a2a2a;
+  --accent:#1a4be0; --accent-ink:#ffffff; --link:#8fa8ff;
   --film:#0d0d0d; --film-2:#1d1d1d; --film-ink:#f2f2f2; --film-muted:#a0a0a0;
-  --pencil:#d4322c; --pencil-soft:#fbe4e2;
+  --pencil:#e5483f; --pencil-soft:#3b1614;
   --f:"Switzer","Pretendard Variable","Pretendard",system-ui,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
   --s-small:14px; --s-body:17px; --s-lead:clamp(20px,1.1rem + .6vw,24px);
   --s-head:clamp(30px,1.2rem + 2.6vw,54px); --s-num:clamp(56px,7vw,108px);
   --w:1240px; --ease:cubic-bezier(.23,1,.32,1);
-  color-scheme:light;
+  color-scheme:dark;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink);font:400 var(--s-body)/1.6 var(--f);letter-spacing:-.005em;
   word-break:keep-all;overflow-wrap:break-word;-webkit-font-smoothing:antialiased}
 ::selection{background:var(--ink);color:var(--bg)}
-a{color:var(--accent);text-underline-offset:3px}
+a{color:var(--link);text-underline-offset:3px}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .n{font-variant-numeric:tabular-nums}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
@@ -53,7 +53,7 @@ h1,h2,.head{font-weight:600;letter-spacing:-.035em;line-height:1.12;text-wrap:ba
 .cover-yr{position:absolute;z-index:2;top:max(22px,env(safe-area-inset-top,0px));right:max(clamp(16px,3vw,40px),env(safe-area-inset-right,0px));
   margin:0;font-size:var(--s-small);color:rgba(255,255,255,.85);text-align:right;font-variant-numeric:tabular-nums}
 .cover-yr b{display:block;font-size:clamp(28px,3vw,44px);font-weight:600;letter-spacing:-.04em;line-height:1.1;color:#fff}
-.sheet-sec{background:var(--film);color:var(--film-ink);padding-block:clamp(40px,6vh,64px) clamp(56px,8vh,88px)}
+.sheet-sec{background:#000;color:var(--film-ink);padding-block:clamp(40px,6vh,64px) clamp(56px,8vh,88px)}
 .sheet-sec h2{font-size:var(--s-lead);letter-spacing:-.02em;margin-bottom:6px}
 .sheet-sec .hint{color:var(--film-muted)}
 .sheet{background:#000;color:var(--film-ink);padding:22px clamp(14px,2vw,26px) 18px;position:relative}
@@ -100,7 +100,7 @@ h1,h2,.head{font-weight:600;letter-spacing:-.035em;line-height:1.12;text-wrap:ba
 .chart .hit{fill:transparent}
 .chart .hit:focus{outline:none}
 .chart g.on circle.dot{stroke:var(--ink);stroke-width:2}
-.tip{position:absolute;pointer-events:none;background:var(--ink);color:#fff;font-size:var(--s-small);line-height:1.5;padding:8px 10px;
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);font-size:var(--s-small);line-height:1.5;padding:8px 10px;
   opacity:0;transform:translateY(4px);transition:opacity .15s var(--ease),transform .15s var(--ease);white-space:nowrap}
 .tip.on{opacity:1;transform:none}
 .tbl{overflow-x:auto}
@@ -114,7 +114,7 @@ tr.x td{background:var(--pencil-soft)} tr.on td{background:var(--surface)}
 .src a{word-break:break-all}
 
 /* ── 시각 인코딩 ───────────── */
-.enc{background:var(--film);color:var(--film-ink);padding-block:clamp(72px,10vh,120px) clamp(40px,6vh,64px);margin-top:clamp(72px,10vh,120px)}
+.enc{background:#000;color:var(--film-ink);padding-block:clamp(72px,10vh,120px) clamp(40px,6vh,64px);margin-top:clamp(72px,10vh,120px)}
 .enc .rule,.enc .thumbs figcaption span{color:var(--film-muted)}
 .enc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:48px 56px;margin-top:24px}
 .eq{font-size:clamp(26px,1rem + 1.8vw,40px);font-weight:600;letter-spacing:-.035em;line-height:1.15;margin:0 0 8px}
@@ -127,21 +127,25 @@ tr.x td{background:var(--pencil-soft)} tr.on td{background:var(--surface)}
 .th>img{display:block;width:100%;height:100%;object-fit:cover}
 
 /* ── 극장 ───────────── */
-.scrolly{position:relative;background:var(--film);color:var(--film-ink)}
+.scrolly{position:relative;background:#000;color:var(--film-ink)}
 .stage{position:sticky;top:0;height:100vh;height:100svh;display:flex;flex-direction:column;overflow:hidden}
 .ruler{display:grid;grid-template-columns:repeat(16,minmax(0,1fr));gap:4px;width:100%;padding-block:16px 8px}
 .ruler span{border-top:2px solid #2e2e2e;padding-top:6px;font-size:var(--s-small);color:#7a7a7a;text-align:center;transition:color .2s,border-color .2s}
 .ruler span.done{border-color:#5a5a5a}
 .ruler span.on{border-color:var(--film-ink);color:var(--film-ink);font-weight:600}
 .ruler span.x{color:var(--pencil)}
-.theater{position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
-.screen{position:relative;aspect-ratio:16/9;width:min(100%,calc((100svh - 300px) * 16 / 9));background:var(--film-2)}
+.theater{position:relative;flex:1;min-height:0;display:flex;align-items:flex-start;justify-content:center;padding-top:clamp(12px,3vh,32px);overflow:hidden}
+.beam{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.seats{position:absolute;left:0;right:0;bottom:0;width:100%;height:30%;pointer-events:none;z-index:5}
+.exit{position:absolute;top:10px;left:max(clamp(16px,3vw,40px),env(safe-area-inset-left,0px));z-index:2;font-size:13px;font-weight:600;letter-spacing:.02em;
+  color:#9dffc4;background:#0e5530;padding:3px 9px;box-shadow:0 0 22px rgba(60,220,130,.35)}
+.screen{position:relative;z-index:0;aspect-ratio:16/9;width:min(88%,calc((100svh - 300px) * 16 / 9 * .8));background:var(--film-2);box-shadow:0 0 0 clamp(6px,1vw,12px) #050505,0 0 120px rgba(220,225,235,.08)}
 .screen .other{position:absolute;left:14px;top:10px;font-size:var(--s-small);color:#8a8a8a}
 .film{position:absolute;left:50%;top:50%;aspect-ratio:16/9;transform:translate(-50%,-50%);width:20%;transition:width .9s var(--ease);outline:1px solid rgba(255,255,255,.5)}
 .tag{position:absolute;left:0;bottom:calc(100% + 6px);white-space:nowrap;font-size:var(--s-small);font-weight:600;color:var(--film-ink)}
 .ref{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);aspect-ratio:16/9;width:31.62%;border:1px dashed #555}
 .ref span{position:absolute;right:0;top:calc(100% + 4px);font-size:var(--s-small);color:#8a8a8a}
-#fog{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+#fog{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:4}
 .caption{display:grid;grid-template-columns:220px minmax(0,1fr);gap:16px 40px;padding-block:22px 28px;min-height:180px;align-items:start}
 .read{display:grid;gap:8px}
 .read .y{font-size:44px;font-weight:600;letter-spacing:-.04em;line-height:1}
@@ -171,7 +175,8 @@ tr.x td{background:var(--pencil-soft)} tr.on td{background:var(--surface)}
   .row .c{grid-column:1/-1;padding-left:0}
   .enc-grid{grid-template-columns:minmax(0,1fr)}
   .ruler{gap:2px}
-  .screen{width:min(100%,calc((100svh - 380px) * 16 / 9))}
+  .screen{width:min(94%,calc((100svh - 380px) * 16 / 9 * .8))}
+  .seats{height:24%}
   .caption{grid-template-columns:minmax(0,1fr);gap:10px;min-height:250px;padding-block:12px 18px}
   .read{grid-template-columns:auto minmax(0,1fr);align-items:center;gap:6px 18px}
   .read .y{grid-row:span 2;font-size:30px}
@@ -206,7 +211,7 @@ tr.x td{background:var(--pencil-soft)} tr.on td{background:var(--surface)}
     <div class="legend">
       <span>안개 농도 = EPU</span>
       <span>로맨스 장면의 넓이 = 극장 매출 중 로맨스 점유율</span>
-      <span><svg class="pen" viewBox="0 0 30 16" aria-hidden="true"><ellipse cx="15" cy="8" rx="13" ry="6" fill="none" stroke="#d4322c" stroke-width="2"/></svg>경향선에서 가장 멀리 떨어진 네 해</span>
+      <span><svg class="pen" viewBox="0 0 30 16" aria-hidden="true"><ellipse cx="15" cy="8" rx="13" ry="6" fill="none" stroke="#e5483f" stroke-width="2"/></svg>경향선에서 가장 멀리 떨어진 네 해</span>
     </div>
   </div>
 </section>
@@ -275,6 +280,9 @@ tr.x td{background:var(--pencil-soft)} tr.on td{background:var(--surface)}
         <div class="ref"><span>10%</span></div>
         <div class="film" id="film"><span class="tag" id="tag"></span><img src="assets/lovers.jpg" width="1600" height="1000" alt=""></div>
       </div>
+      <span class="exit" aria-hidden="true">비상구</span>
+      <svg class="beam" id="beam" aria-hidden="true"></svg>
+      <svg class="seats" id="seats" viewBox="0 0 1200 220" preserveAspectRatio="xMidYMax slice" aria-hidden="true"></svg>
       <canvas id="fog"></canvas>
     </div>
     <div class="caption gut wrap" style="width:100%" aria-hidden="true">
@@ -343,7 +351,7 @@ function paintFog(c,d,a,b){const x=c.getContext('2d'),W=c.width,H=c.height;x.cle
 }
 function sizeCanvas(c){const r=c.getBoundingClientRect();c.width=Math.max(1,Math.round(r.width*devicePixelRatio));c.height=Math.max(1,Math.round(r.height*devicePixelRatio))}
 const IMG='<img src="assets/lovers.jpg" width="1600" height="1000" alt="" loading="lazy" decoding="async">';
-const MARK='<svg class="mark" viewBox="0 0 100 60" preserveAspectRatio="none" aria-hidden="true"><path d="M8 34C3 14 34 4 60 5c28 1 38 15 35 31-3 15-31 21-55 19C17 53 4 45 10 24" fill="none" stroke="#d4322c" stroke-width="2.4" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>';
+const MARK='<svg class="mark" viewBox="0 0 100 60" preserveAspectRatio="none" aria-hidden="true"><path d="M8 34C3 14 34 4 60 5c28 1 38 15 35 31-3 15-31 21-55 19C17 53 4 45 10 24" fill="none" stroke="#e5483f" stroke-width="2.4" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>';
 
 // 첫 화면: 16개 프레임의 밀착 인화지
 $('spT').innerHTML=$('spB').innerHTML='<i></i>'.repeat(40);
@@ -364,7 +372,19 @@ $('encSize').innerHTML=[2023,2010,2012].map(y=>{const d=D.find(o=>o.y===y);retur
 function drawStatic(){document.querySelectorAll('canvas[data-fog]').forEach(c=>{sizeCanvas(c);paintFog(c,+c.dataset.fog,0,0)})}
 drawStatic();let rz1;addEventListener('resize',()=>{clearTimeout(rz1);rz1=setTimeout(drawStatic,150)});
 
-// 극장
+// 극장: 객석(뒤쪽일수록 작게)과 관객 몇 명, 영사기 빛줄기
+(function(){let g='';const R=[[64,46,56,'#151515',[4,9,15]],[108,62,74,'#0b0b0b',[6,7,12]],[160,84,98,'#050505',[3,9]]];
+  R.forEach(([y,w,step,c,heads],ri)=>{const off=ri%2?step/2:0;let k=0;
+    for(let x=-step+off;x<1200+step;x+=step,k++){g+=`<rect x="${x}" y="${y}" width="${w}" height="${220-y}" rx="${w*.28}" fill="${c}"/>`;
+      if(heads.includes(k))g+=`<circle cx="${x+w/2+(k===7&&ri===1?6:0)}" cy="${y-w*.18}" r="${w*.24}" fill="${c}"/>`}});
+  $('seats').innerHTML=g})();
+const theaterEl=document.querySelector('.theater'),screenEl=document.querySelector('.screen');
+function drawBeam(){const t=theaterEl.getBoundingClientRect(),r=screenEl.getBoundingClientRect(),W=t.width,H=t.height;
+  const L=r.left-t.left,T=r.top-t.top,Rr=r.right-t.left,B=r.bottom-t.top,ax=W/2,ay=H*1.18;
+  $('beam').setAttribute('viewBox',`0 0 ${W} ${H}`);
+  $('beam').innerHTML=`<defs><linearGradient id="bm" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#dfe4ee" stop-opacity=".22"/><stop offset="1" stop-color="#dfe4ee" stop-opacity=".03"/></linearGradient></defs><path fill-rule="evenodd" d="M${ax} ${ay}L${L} ${B}L${L} ${T}L${Rr} ${T}L${Rr} ${B}ZM${L} ${T}H${Rr}V${B}H${L}Z" fill="url(#bm)"/>`}
+drawBeam();addEventListener('resize',drawBeam);
+
 const cv=$('fog');sizeCanvas(cv);addEventListener('resize',()=>sizeCanvas(cv));
 let fogNow=0,fogTarget=0,o1=0,o2=0;
 // 첫 화면 안개: 16년의 실제 EPU를 차례로 보여 준다
@@ -420,15 +440,15 @@ $('finding').tabIndex=-1;
 function drawScatter(){
   const s=$('scatter'),VW=Math.max(330,Math.min(1240,s.parentElement.clientWidth)),VH=VW<560?380:460,L=48,T=30,W=VW-L-24,H=VH-T-70,xs=v=>L+v/550*W,ys=v=>T+H-v/10*H;let g='';
   s.setAttribute('viewBox',`0 0 ${VW} ${VH}`);
-  for(let v=0;v<=500;v+=100)g+=`<line x1="${xs(v)}" x2="${xs(v)}" y1="${T}" y2="${T+H}" stroke="#ececec"/><text x="${xs(v)}" y="${T+H+22}" text-anchor="middle">${v}</text>`;
-  for(let v=0;v<=10;v+=2)g+=`<line x1="${L}" x2="${L+W}" y1="${ys(v)}" y2="${ys(v)}" stroke="#ececec"/><text x="${L-10}" y="${ys(v)+4}" text-anchor="end">${v}%</text>`;
+  for(let v=0;v<=500;v+=100)g+=`<line x1="${xs(v)}" x2="${xs(v)}" y1="${T}" y2="${T+H}" stroke="#262626"/><text x="${xs(v)}" y="${T+H+22}" text-anchor="middle">${v}</text>`;
+  for(let v=0;v<=10;v+=2)g+=`<line x1="${L}" x2="${L+W}" y1="${ys(v)}" y2="${ys(v)}" stroke="#262626"/><text x="${L-10}" y="${ys(v)+4}" text-anchor="end">${v}%</text>`;
   const x0=70,x1=500;
-  g+=`<line x1="${xs(x0)}" y1="${ys(P.a+P.b*x0)}" x2="${xs(x1)}" y2="${ys(Math.max(0,P.a+P.b*x1))}" stroke="#111" stroke-width="1.5" stroke-dasharray="6 5"/>`;
+  g+=`<line x1="${xs(x0)}" y1="${ys(P.a+P.b*x0)}" x2="${xs(x1)}" y2="${ys(Math.max(0,P.a+P.b*x1))}" stroke="#d8d8d8" stroke-width="1.5" stroke-dasharray="6 5"/>`;
   g+=`<text x="${xs(390)}" y="${ys(P.a+P.b*390)-10}" text-anchor="middle">경향선</text>`; // 300~500 사이는 점이 없는 구간
   const LAB={2012:[11,5],2014:[11,5],2020:[-11,20,'end'],2023:[6,22],2025:[0,-14,'middle'],2010:[11,-8]};
   D.forEach(d=>{const hi=TOP.includes(d.y),cxp=xs(d.epu),cyp=ys(d.sh),lb=LAB[d.y];
     g+=`<g data-y="${d.y}"><circle class="hit" r="14" cx="${cxp}" cy="${cyp}" tabindex="0" aria-label="${d.y}년, EPU ${f1(d.epu)}, 로맨스 점유율 ${f2(d.sh)}%"/>`+
-      `<circle class="dot" cx="${cxp}" cy="${cyp}" r="${hi?7:5.5}" fill="${hi?'#d4322c':'#111'}" stroke="#fff" stroke-width="2" pointer-events="none"/>`+
+      `<circle class="dot" cx="${cxp}" cy="${cyp}" r="${hi?7:5.5}" fill="${hi?'#e5483f':'#f2f2f2'}" stroke="#0d0d0d" stroke-width="2" pointer-events="none"/>`+
       (lb?`<text class="lab" x="${cxp+lb[0]}" y="${cyp+lb[1]}" text-anchor="${lb[2]||'start'}" pointer-events="none">${d.y}</text>`:'')+`</g>`});
   g+=`<text x="${L+W}" y="${T+H+48}" text-anchor="end">연평균 EPU (경제정책 불확실성 지수)</text><text x="${L-10}" y="${T-12}">멜로/로맨스 매출 점유율</text>`;
   s.innerHTML=g;

@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>안개 낀 극장</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+[hidden]{display:none!important}
+/* Layout: 위 = 불 켜진 객석(밝은 지면) — 결과·상관계수·산점도·표·출처를 먼저 읽는다.
+   아래 = 불 꺼진 극장 — 고정된 스크린과 자막 패널, 스크롤로 연도를 넘긴다.
+   스크린 속 로맨스 영화 화면의 넓이 = 점유율, 극장 전체를 덮는 안개 = EPU. */
+:root{
+  --paper:#e9e8ec; --ink:#1b1d36; --ink2:#4a4c66; --line:#cdccd8; --accent:#b8304d;
+  --w:1120px;
+  --night:#141630; --text:#eeeef3; --dim:#a7a9c0; --rule:#2c2f52; --rose:#ff8a9a; --fogc:#dfe3ec;
+  --f-cap:"Hahmlet","Nanum Myeongjo",ui-serif,serif;
+  --f-body:"Noto Sans KR",system-ui,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --ease:cubic-bezier(.23,1,.32,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.7 var(--f-body);word-break:keep-all;overflow-wrap:break-word}
+::selection{background:var(--rose);color:var(--ink)}
+.n{font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+a{color:inherit;text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* ── 위: 결과 ───────────────────────── */
+.report{max-width:var(--w);margin:0 auto;padding-block:72px 40px}
+.report h1{font:700 clamp(28px,4.2vw,46px)/1.35 var(--f-cap);letter-spacing:-.02em;margin:0 0 20px;max-width:21em;text-wrap:balance}
+.lede{font-size:clamp(16px,1.6vw,19px);color:var(--ink2);max-width:40em;margin:0 0 48px}
+.stats{display:grid;grid-template-columns:minmax(0,auto) minmax(0,1fr);gap:20px 48px;align-items:start;margin-bottom:56px}
+.big{font:700 clamp(44px,7vw,80px)/1 var(--f-cap);letter-spacing:-.03em;white-space:nowrap}
+.big small{display:block;font:500 14px/1.5 var(--f-body);letter-spacing:0;color:var(--ink2);margin-top:10px;white-space:normal;max-width:14em}
+.stats p{margin:0 0 12px;max-width:36em}
+.stats p:last-child{margin:0}
+.report h2{font:700 22px/1.4 var(--f-cap);margin:0 0 6px}
+.hint{color:var(--ink2);font-size:16px;margin:0 0 16px;max-width:42em}
+.fig{margin:0 0 64px}
+.chart{position:relative;overflow-x:auto}
+.chart svg{display:block;width:100%;height:auto}
+.chart text{fill:var(--ink2);font:13px var(--f-body)}
+.chart .lab{fill:var(--ink);font-weight:500}
+.chart .hit{fill:transparent;cursor:default}
+.chart .hit:focus{outline:none}
+.chart .hit:focus-visible+circle,.chart g.on circle.dot{stroke:var(--ink);stroke-width:2}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--paper);font-size:13px;line-height:1.5;padding:8px 10px;border-radius:6px;
+  opacity:0;transform:translateY(4px);transition:opacity .15s var(--ease),transform .15s var(--ease);white-space:nowrap}
+.tip.on{opacity:1;transform:none}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:16px;font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:7px 12px;border-bottom:1px solid var(--line)}
+th{font-weight:500;color:var(--ink2);font-size:13px;vertical-align:bottom}
+th:first-child,td:first-child{text-align:left}
+tr.x td{background:#f3dde2} tr.on td{background:#dcdbe6}
+.src{padding-left:1.1em;margin:0;font-size:16px;color:var(--ink);columns:2 320px;column-gap:56px}
+.src li{margin-bottom:12px;break-inside:avoid}
+.src a{word-break:break-all}
+.handoff{background:var(--night);color:var(--text)}
+.handoff div{max-width:var(--w);margin:0 auto;padding-block:96px 24px}
+.handoff p{font:600 clamp(20px,2.4vw,28px)/1.5 var(--f-cap);margin:0;max-width:24em;text-wrap:balance}
+.handoff span{display:block;font:400 16px/1.7 var(--f-body);color:var(--dim);margin-top:10px}
+
+/* ── 아래: 극장 ───────────────────────── */
+.scrolly{position:relative;background:var(--night);color:var(--text)}
+.stage{position:sticky;top:0;height:100vh;height:100svh;display:flex;flex-direction:column;overflow:hidden}
+.chapters{display:flex;gap:6px;padding-block:14px 8px;max-width:var(--w);width:100%;margin:0 auto}
+.chapters button{flex:1;min-width:0;background:none;border:0;border-top:2px solid var(--rule);color:var(--dim);
+  font:500 13px/1.3 var(--f-body);text-align:left;padding:8px 0 0;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  transition:color .2s,border-color .2s}
+.chapters button.on{border-color:var(--rose);color:var(--text)}
+.chapters button.done{border-color:#6a6d92}
+.chapters button:focus-visible{outline-color:var(--rose)}
+@media (hover:hover){.chapters button:hover{color:var(--text)}}
+
+.theater{position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.curtain{position:absolute;top:0;bottom:0;width:9%;z-index:1;overflow:hidden;background:#5e1a2c}
+.curtain svg,.valance svg{display:block;width:100%;height:100%}
+.curtain.l{left:0;border-radius:0 0 60% 0/0 0 18% 0}
+.curtain.r{right:0;border-radius:0 0 0 60%/0 0 0 18%}
+.valance{position:absolute;top:0;left:0;right:0;height:16px;z-index:2;background:#3f0f1c}
+.screen{position:relative;z-index:0;aspect-ratio:16/9;width:min(78%,calc((100svh - 330px) * 16 / 9));max-width:100%;background:#262944}
+.screen .other{position:absolute;left:10px;top:8px;font-size:13px;color:#a3a6c6;transition:opacity .5s}
+.film{position:absolute;left:50%;top:50%;aspect-ratio:16/9;transform:translate(-50%,-50%);width:100%;transition:width 1s var(--ease)}
+.film svg{display:block;width:100%;height:100%}
+.film.boxed{outline:1.5px solid var(--rose)}
+.tag{position:absolute;left:0;bottom:calc(100% + 6px);white-space:nowrap;font:600 13px var(--f-body);color:var(--rose);transition:opacity .4s}
+.ref{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);aspect-ratio:16/9;width:31.62%;border:1px dashed #6f7299;transition:opacity .5s}
+.ref span{position:absolute;right:0;top:calc(100% + 4px);font-size:13px;color:#a3a6c6}
+.seats{position:absolute;left:0;right:0;bottom:-6px;height:16%;z-index:2;pointer-events:none}
+#fog{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none}
+
+.caption{display:grid;grid-template-columns:210px minmax(0,1fr);gap:16px 40px;max-width:var(--w);width:100%;margin:0 auto;
+  padding-block:22px 26px;min-height:190px;align-items:start}
+.read{display:grid;gap:8px;transition:opacity .4s}
+.read .y{font:700 40px/1 var(--f-cap)}
+.meter{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:13px;color:var(--dim);align-items:baseline;transition:opacity .4s}
+.meter b{font-weight:700;font-size:16px;color:var(--text);text-align:right}
+.meter .bar{grid-column:1/-1;height:4px;background:var(--rule);border-radius:2px;overflow:hidden}
+.meter .bar i{display:block;height:100%;width:100%;transform-origin:left;transform:scaleX(0);transition:transform .5s var(--ease);border-radius:2px}
+.m-fog .bar i{background:var(--fogc)} .m-rom .bar i{background:var(--rose)} .m-rom b{color:var(--rose)}
+.line{transition:opacity .2s var(--ease),filter .2s var(--ease)}
+.line.swap{opacity:0;filter:blur(3px)}
+.line .t{font:600 clamp(21px,2.4vw,30px)/1.45 var(--f-cap);margin:0 0 8px;text-wrap:balance;max-width:28em}
+.line .s{margin:0;color:#d2d1dd;max-width:42em;font-size:clamp(14px,1.2vw,16px)}
+
+.key{display:flex;flex-wrap:wrap;gap:16px 40px;margin-top:16px}
+.key[hidden]{display:none}
+.k-row{display:grid;gap:8px}
+.k-lab{margin:0;font-size:14px;color:var(--text);font-weight:500}
+.k-set{display:flex;gap:10px;align-items:flex-end}
+.k-set figure{margin:0;display:grid;gap:4px;justify-items:center;font-size:13px;color:var(--dim);font-variant-numeric:tabular-nums}
+.k-sw{width:52px;aspect-ratio:16/9;position:relative;background:#c06f8e}
+.k-sw i{position:absolute;inset:0;background:#d7dbe6}
+.k-scr{width:72px;aspect-ratio:16/9;position:relative;background:#363a5c}
+.k-scr i{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);aspect-ratio:16/9;background:#c06f8e;outline:1px solid var(--rose)}
+.steps{position:relative;margin-top:-100vh;margin-top:-100svh;pointer-events:none}
+.step{height:100vh;height:100svh}
+.step[data-sweep]{height:calc(16 * 26svh)}
+.outro{background:var(--night);color:var(--dim);font-size:16px}
+.outro div{max-width:var(--w);margin:0 auto;padding-block:40px 64px}
+.outro button{font:500 16px var(--f-body);color:var(--text);background:#262944;border:0;border-radius:999px;padding:10px 18px;cursor:pointer;transition:transform .16s var(--ease)}
+.outro button:active{transform:scale(.97)}
+
+@media (max-width:760px){
+  .report{padding-block:48px 24px}
+  .stats{grid-template-columns:minmax(0,1fr)}
+  .curtain{width:5%} .seats{height:12%}
+  .screen{width:min(88%,calc((100svh - 390px) * 16 / 9))}
+  .caption{grid-template-columns:minmax(0,1fr);gap:10px;min-height:250px;padding-block:12px 18px}
+  .read{grid-template-columns:auto minmax(0,1fr);align-items:center;gap:6px 18px}
+  .read .y{grid-row:span 2}
+  .read .y{font-size:28px}
+  .chapters button{font-size:13px;white-space:normal;line-height:1.25}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<main>
+<section class="report gut" aria-labelledby="finding">
+  <h1 id="finding">경제적 불확실성이 높아질수록, 로맨스 영화의 흥행 점유율은 낮아지는 경향이 나타났다.</h1>
+  <p class="lede">2010~2025년 한국의 연평균 경제정책 불확실성 지수(EPU)와, 같은 해 극장 매출 가운데 멜로/로맨스 영화가 차지한 비율을 16개 연도에 걸쳐 비교했다.</p>
+
+  <div class="stats">
+    <div class="big n" id="rval">r = −0.475<small>피어슨 상관계수, 16개 연도</small></div>
+    <div>
+      <p>r은 −1부터 1 사이의 값이다. 0보다 작으면 한 값이 클 때 다른 값이 작은 관계를, 0에 가까울수록 관계가 약함을 뜻한다. 이 자료의 r은 −0.475다.</p>
+      <p>값의 크기 대신 순위로 계산한 스피어만 순위상관계수는 <span class="n" id="rho">−0.84</span>다. 산점도에서 다른 점들과 떨어져 있는 2012년과 2025년을 빼고 14개 연도로 계산한 피어슨 r은 <span class="n" id="r14">−0.86</span>이다.</p>
+      <p><strong>상관관계는 인과관계를 뜻하지 않는다.</strong> 두 값은 모두 16년 동안 한 방향으로 변했다. OTT 보급, 코로나19, 관객 취향 같은 같은 시기의 다른 변화가 두 값에 함께 영향을 주었을 가능성은 이 자료로 구분할 수 없다.</p>
+    </div>
+  </div>
+
+  <figure class="fig">
+    <h2>연도별 분포</h2>
+    <p class="hint">점 하나가 한 해다. 점선은 최소제곱 경향선이다. 분홍 점은 경향선에서 가장 멀리 떨어진 네 해다. 점에 마우스를 올리거나 탭하면 수치가 보인다.</p>
+    <div class="chart"><svg id="scatter" role="group" aria-label="연평균 EPU와 멜로/로맨스 매출 점유율 산점도, 16개 연도"></svg><div class="tip" id="tip"></div></div>
+  </figure>
+
+  <section class="fig" aria-labelledby="h-tbl">
+    <h2 id="h-tbl">연도별 수치</h2>
+    <p class="hint">분홍 행은 경향선에서 가장 멀리 떨어진 네 해다. 경향선과의 차이 = 실제 점유율 − 경향선이 해당 EPU에서 가리키는 점유율.</p>
+    <div class="tbl"><table id="tbl"><thead><tr><th>연도</th><th>극장 전체 매출<br>(억 원)</th><th>EPU<br>연평균</th><th>멜로/로맨스 매출<br>(억 원)</th><th>로맨스<br>점유율</th><th>경향선과의<br>차이</th></tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <section aria-labelledby="h-src">
+    <h2 id="h-src">데이터와 방법</h2>
+    <ul class="src">
+      <li>영화 매출: KOBIS 연도별 박스오피스, 전체 영화·전국 기준. 매년 1월 1일~12월 31일 극장 매출이며 OTT·VOD는 포함하지 않는다. <a href="https://www.kobis.or.kr/kobis/business/stat/boxs/findYearlyBoxOfficeList.do" target="_blank" rel="noopener">KOBIS 연도별 박스오피스</a></li>
+      <li>장르: KOBIS 영화정보의 대표장르 하나로 집계했다(장르 간 중복 없음). 로맨스는 「멜로/로맨스」다. 영화명이 매칭되지 않거나 동명 영화의 장르가 서로 다른 경우는 제외했으며, 제외된 영화의 매출은 분모(극장 전체 매출)에만 포함된다. <a href="https://www.kobis.or.kr/kobis/business/mast/mvie/searchMovieList.do" target="_blank" rel="noopener">KOBIS 영화정보 검색</a></li>
+      <li>점유율 = 멜로/로맨스 매출 ÷ KOBIS 연간 극장 전체 매출 × 100.</li>
+      <li>EPU: Baker·Bloom·Davis의 한국 경제정책 불확실성 지수(New South Korean EPU Index) 월별 값을 연도별로 산술평균했다. <a href="https://www.policyuncertainty.com/korea_bbd.html" target="_blank" rel="noopener">policyuncertainty.com</a></li>
+      <li>아래 시각화의 대응: 안개 농도 = 그해 EPU ÷ 529.0(16년 중 최댓값), 0부터 선형. 로맨스 화면의 넓이 = 스크린 넓이 × 점유율이며, 화면 비율을 유지하려고 한 변의 길이를 √점유율 배로 줄였다.</li>
+    </ul>
+  </section>
+</section>
+
+<div class="handoff gut"><div>
+  <p>아래에서는 같은 16년을 한 극장 안에 옮긴다.</p>
+  <span>안개의 농도는 EPU를, 스크린에 비친 로맨스 영화의 넓이는 로맨스 점유율을 나타낸다. 스크롤하면 장면과 연도가 바뀐다.</span>
+</div></div>
+
+<div class="scrolly">
+  <div class="stage">
+    <nav class="chapters gut" id="chapters" aria-label="극장 장면 이동">
+      <button data-go="1">극장과 인코딩</button><button data-go="2">16년 함께 보기</button><button data-go="3">경향선과 먼 해</button>
+    </nav>
+    <div class="theater" role="img" aria-label="극장 스크린. 로맨스 영화 화면의 넓이는 로맨스 매출 점유율, 극장을 덮은 안개의 농도는 경제정책 불확실성 지수를 나타낸다.">
+      <div class="valance"></div><div class="curtain l"></div><div class="curtain r"></div>
+      <div class="screen">
+        <span class="other" id="other">나머지 = 다른 장르의 매출</span>
+        <div class="ref" id="ref"><span>10%</span></div>
+        <div class="film" id="film">
+          <span class="tag" id="tag"></span>
+          <svg viewBox="0 0 160 90" preserveAspectRatio="none" aria-hidden="true">
+            <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#3b2d63"/><stop offset=".45" stop-color="#b9628a"/><stop offset=".78" stop-color="#f3a58e"/></linearGradient></defs>
+            <rect width="160" height="90" fill="url(#sky)"/>
+            <circle cx="80" cy="60" r="13" fill="#ffd9b0" opacity=".95"/>
+            <g fill="#8a557f"><rect x="6" y="44" width="10" height="26"/><rect x="18" y="38" width="8" height="32"/><rect x="28" y="48" width="12" height="22"/><rect x="112" y="40" width="9" height="30"/><rect x="123" y="47" width="12" height="23"/><rect x="138" y="36" width="8" height="34"/><rect x="148" y="50" width="12" height="20"/></g>
+            <g fill="#4d3363"><rect x="0" y="54" width="14" height="16"/><rect x="34" y="56" width="16" height="14"/><rect x="102" y="52" width="12" height="18"/><rect x="130" y="56" width="18" height="14"/></g>
+            <rect y="68" width="160" height="22" fill="#2b2046"/>
+            <g stroke="#ffd9b0" stroke-opacity=".5" stroke-width=".6"><line x1="70" y1="73" x2="90" y2="73"/><line x1="74" y1="77" x2="86" y2="77"/><line x1="77" y1="81" x2="83" y2="81"/></g>
+            <rect x="0" y="66.5" width="160" height="1.6" fill="#1a1230"/>
+            <g fill="#1a1230" stroke="#1a1230">
+              <rect x="20" y="58" width="1" height="10"/><rect x="45" y="58" width="1" height="10"/><rect x="115" y="58" width="1" height="10"/><rect x="140" y="58" width="1" height="10"/>
+              <line x1="0" y1="59" x2="160" y2="59" stroke-width=".8"/>
+              <circle cx="75.5" cy="46.5" r="2.4"/><path d="M73 49.5 q2.5-1.5 5 0 l1 17 h-7z"/>
+              <circle cx="80.6" cy="47.6" r="2.2"/><path d="M78.6 50.2 q2.2-1.2 4.4 0 l1.6 16.3 h-7.2z"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <svg class="seats" id="seats" viewBox="0 0 1000 80" preserveAspectRatio="none" aria-hidden="true"></svg>
+      <canvas id="fog"></canvas>
+    </div>
+    <div class="caption gut" aria-hidden="true">
+      <div class="read" id="read">
+        <div class="y n" id="ry"></div>
+        <div class="meter m-fog"><span>EPU</span><b class="n" id="re"></b><span class="bar"><i id="be"></i></span></div>
+        <div class="meter m-rom"><span>로맨스 점유율</span><b class="n" id="rr"></b><span class="bar"><i id="br"></i></span></div>
+      </div>
+      <div class="line" id="line"><p class="t" id="ct"></p><p class="s" id="cs"></p>
+        <div class="key" id="key" hidden>
+          <div class="k-row"><p class="k-lab">안개 농도 = EPU ÷ 529.0</p><div class="k-set" id="kFog"></div></div>
+          <div class="k-row"><p class="k-lab">화면 넓이 = 로맨스 점유율</p><div class="k-set" id="kSize"></div></div>
+        </div></div>
+    </div>
+  </div>
+
+  <div class="steps" id="steps">
+    <section class="step" data-ch="1" data-mode="intro">
+      <h2 class="t sr">스크린에서 로맨스 영화가 상영되고 있다.</h2>
+      <p class="s sr">이 극장에서 2010년부터 2025년까지 한국 극장의 멜로/로맨스 영화 매출과 경제정책 불확실성 지수를 함께 본다.</p></section>
+    <section class="step" data-ch="1" data-mode="both" data-year="2010" data-key>
+      <h2 class="t sr">안개의 농도는 EPU를, 로맨스 화면의 넓이는 로맨스 점유율을 나타낸다.</h2>
+      <p class="s sr">스크린 전체가 그해 극장 매출 100%다. 안개 농도는 그해 EPU를 16년 중 최댓값 529.0으로 나눈 값에 비례하고, 로맨스 화면의 넓이는 점유율에 비례한다. 지금 화면은 2010년 값이다.</p></section>
+    <section class="step" data-ch="2" data-mode="both" data-sweep>
+      <h2 class="t sr">2010년부터 2025년까지 연도별 EPU와 로맨스 점유율</h2></section>
+
+    <section class="step" data-ch="3" data-mode="both" data-year="2012" data-resid></section>
+    <section class="step" data-ch="3" data-mode="both" data-year="2020" data-resid
+      data-extra="같은 해 극장 전체 매출은 2019년 1조 9,140억 원에서 5,104억 원으로 줄었다. 코로나19가 유행한 첫해다."></section>
+    <section class="step" data-ch="3" data-mode="both" data-year="2023" data-resid></section>
+    <section class="step" data-ch="3" data-mode="both" data-year="2025" data-resid
+      data-extra="2025년 EPU는 16년 중 가장 높다. 직선 경향선을 이 값까지 늘리면 점유율이 0% 아래를 가리킨다."></section>
+  </div>
+</div>
+
+<footer class="outro gut"><div>
+  <p>전체 수치와 출처는 이 페이지 위쪽 ‘연도별 수치’와 ‘데이터와 방법’에 있다.</p>
+  <button type="button" id="totop">위로 돌아가기</button>
+</div></footer>
+</main>
+
+<script>
+// 원자료: korea_genre_boxoffice_2010_2025_pivot.csv — 연도, 극장 전체 매출(원), EPU 연평균, 멜로/로맨스 매출(원), 점유율(%)
+const D=[
+[2010,1157259388050,148.7245,46107095700,3.9842],[2011,1235820592200,167.0256,36685662600,2.9685],
+[2012,1455140892435,163.275,143270941482,9.8458],[2013,1551347305721,130.6092,65457992500,4.2194],
+[2014,1664232333160,81.8815,86487638635,5.1968],[2015,1715501384678,128.2469,60216839811,3.5102],
+[2016,1743194055370,188.8095,35789544225,2.0531],[2017,1756577851113,160.7715,49004962321,2.7898],
+[2018,1813963827238,145.2037,54346857672,2.996],[2019,1913984720858,257.3615,44126651318,2.3055],
+[2020,510373922191,203.8853,5844581738,1.1452],[2021,584539145200,175.7486,11116939730,1.9018],
+[2022,1160213494400,268.9413,17172048701,1.4801],[2023,1261411991092,242.4907,13668922498,1.0836],
+[2024,1194535841963,275.8678,15148562784,1.2682],[2025,1046986009380,529.0026,11919290198,1.1384]
+].map(([y,tot,epu,rom,sh])=>({y,tot,epu,rom,sh}));
+const EMAX=Math.max(...D.map(d=>d.epu));
+const $=id=>document.getElementById(id);
+const eok=v=>Math.round(v/1e8).toLocaleString('ko-KR');
+const f1=v=>v.toFixed(1), f2=v=>v.toFixed(2);
+const sgn=(v,f)=>(v>0?'+':v<0?'−':'±')+f(Math.abs(v));
+
+// 통계: 피어슨 r, 스피어만 ρ, 최소제곱 경향선, 잔차
+const mean=a=>a.reduce((s,v)=>s+v,0)/a.length;
+function pearson(X,Y){const mx=mean(X),my=mean(Y);let sxy=0,sxx=0,syy=0;
+  X.forEach((x,i)=>{sxy+=(x-mx)*(Y[i]-my);sxx+=(x-mx)**2;syy+=(Y[i]-my)**2});return{r:sxy/Math.sqrt(sxx*syy),b:sxy/sxx,a:my-sxy/sxx*mx}}
+const X=D.map(d=>d.epu),Y=D.map(d=>d.sh),P=pearson(X,Y);
+const rank=a=>a.map(v=>a.filter(w=>w<v).length+1); // 동률 없음(원자료 확인)
+const RHO=pearson(rank(X),rank(Y)).r;
+console.assert(Math.abs(P.r+0.4753)<1e-3&&Math.abs(RHO+0.8382)<1e-3,'stat mismatch',P.r,RHO);
+D.forEach(d=>{d.fit=P.a+P.b*d.epu;d.res=d.sh-d.fit;
+  d.rE=D.filter(o=>o.epu>d.epu).length+1;d.rS=D.filter(o=>o.sh>d.sh).length+1});
+const TOP=[...D].sort((p,q)=>Math.abs(q.res)-Math.abs(p.res)).slice(0,4).map(d=>d.y);
+console.assert(TOP.join()==='2012,2020,2023,2025','top residual years',TOP);
+const minus=s=>s.replace('-','−');
+$('rval').firstChild.textContent='r = '+minus(P.r.toFixed(3));
+$('rho').textContent=minus(RHO.toFixed(2));
+const R14=pearson(...[X,Y].map(a=>a.filter((_,i)=>![2012,2025].includes(D[i].y)))).r;
+console.assert(Math.abs(R14+0.8609)<1e-3,'r14',R14);
+$('r14').textContent=minus(R14.toFixed(2));
+
+// 극장 자막: 해석 없이 값·순위·전년 대비만
+const prev=d=>D[D.indexOf(d)-1];
+const ordinal=n=>n===1?'가장 높다':`${n}번째로 높다`;
+const SWEEP={
+  fog:d=>[`${d.y}년 EPU ${f1(d.epu)}`,
+    (prev(d)?`전년 대비 ${sgn(d.epu-prev(d).epu,f1)}. `:'자료의 첫해. ')+`16년 중 ${ordinal(d.rE)}.`],
+  share:d=>[`${d.y}년 로맨스 점유율 ${f2(d.sh)}%`,
+    (prev(d)?`전년 대비 ${sgn(d.sh-prev(d).sh,f2)}%p. `:'자료의 첫해. ')+`로맨스 매출 ${eok(d.rom)}억 원, 극장 전체 매출 ${eok(d.tot)}억 원.`],
+  both:d=>[`${d.y}년 EPU ${f1(d.epu)}, 로맨스 점유율 ${f2(d.sh)}%`,
+    `16년 중 EPU는 ${ordinal(d.rE)}. 로맨스 점유율은 ${ordinal(d.rS)}.`]
+};
+function residText(d,extra){
+  return[`${d.y}년, 경향선과의 차이 ${sgn(d.res,f2)}%p`,
+    `EPU ${f1(d.epu)}에서 경향선이 가리키는 점유율은 ${minus(f2(d.fit))}%이고, 실제 점유율은 ${f2(d.sh)}%다. 16년 중 차이의 크기가 ${TOP.indexOf(d.y)+1}번째로 크다.`+(extra?' '+extra:'')];
+}
+
+// 커튼: 단색 주름 띠(그라디언트 없이)
+document.querySelectorAll('.curtain,.valance').forEach(el=>{const C=['#4a1322','#7a2639','#5e1a2c','#3f0f1c'];let g='';
+  for(let i=0;i<40;i++)g+=`<rect x="${i*10}" y="0" width="10" height="100" fill="${C[i%4]}"/>`;
+  el.innerHTML=`<svg viewBox="0 0 ${el.classList.contains('valance')?400:100} 100" preserveAspectRatio="none" aria-hidden="true">${g}</svg>`});
+
+// 인코딩 범례: 안개는 실제 렌더와 같은 비율(선형)로, 화면은 √점유율 변 길이로
+$('kFog').innerHTML=[0,132,265,397,529].map(v=>`<figure><span class="k-sw"><i style="opacity:${(v/EMAX*.85).toFixed(2)}"></i></span><figcaption>${v}</figcaption></figure>`).join('');
+$('kSize').innerHTML=[1,5,10].map(v=>`<figure><span class="k-scr"><i style="width:${Math.sqrt(v/100)*100}%"></i></span><figcaption>${v}%</figcaption></figure>`).join('');
+
+// 객석 의자
+(function(){let g='';for(let row=0;row<2;row++){const y=row?40:14,w=row?62:48,step=row?70:56,off=row?-10:14;
+  for(let x=off;x<1000;x+=step)g+=`<rect x="${x}" y="${y}" width="${w}" height="80" rx="${w/3}" fill="${row?'#07081a':'#0d0f26'}"/>`}
+  $('seats').innerHTML=g})();
+
+// 안개: 미리 만든 텍스처 두 겹을 다른 속도로 흘림. 전체 농도 = EPU/EMAX
+const cv=$('fog'),cx=cv.getContext('2d');
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const tex=document.createElement('canvas');tex.width=640;tex.height=320;
+(function(){const t=tex.getContext('2d');
+  for(let i=0;i<220;i++){const x=Math.random()*640,y=Math.random()*320,r=20+Math.random()*90,a=.05+Math.random()*.12;
+    for(const dx of[-640,0,640]){const g=t.createRadialGradient(x+dx,y,0,x+dx,y,r);
+      g.addColorStop(0,`rgba(225,229,238,${a})`);g.addColorStop(1,'rgba(225,229,238,0)');t.fillStyle=g;t.fillRect(x+dx-r,y-r,2*r,2*r)}}})();
+function fit(){const r=cv.getBoundingClientRect();cv.width=Math.max(1,r.width*devicePixelRatio);cv.height=Math.max(1,r.height*devicePixelRatio)}
+addEventListener('resize',fit);fit();
+let fogNow=0,fogTarget=0,o1=0,o2=0;
+function layer(off,scale,alpha){const w=cv.width*scale,h=cv.height;cx.globalAlpha=alpha;
+  for(let x=-(off%w);x<cv.width;x+=w)cx.drawImage(tex,x,0,w,h)}
+(function loop(){
+  fogNow+=(fogTarget-fogNow)*.05;
+  cx.clearRect(0,0,cv.width,cv.height);
+  if(fogNow>.004){
+    if(!reduce){o1+=.25;o2+=.6}
+    cx.globalAlpha=fogNow*.55;cx.fillStyle='#d7dbe6';cx.fillRect(0,0,cv.width,cv.height);
+    layer(o1,1.2,fogNow*.9);layer(o2+300,.8,fogNow*.7); // 선형: 농도 2배 = 불투명도 2배
+    cx.globalAlpha=1;
+  }
+  requestAnimationFrame(loop);
+})();
+
+// 장면 렌더
+let last='';
+function render(mode,idx){
+  const d=idx==null?null:D[idx],key=mode+idx;if(key===last)return;last=key;
+  const boxed=mode==='share'||mode==='both';
+  fogTarget=(mode==='fog'||mode==='both')&&d?d.epu/EMAX:0;
+  $('film').style.width=boxed&&d?Math.sqrt(d.sh/100)*100+'%':'100%';
+  $('film').classList.toggle('boxed',boxed);
+  $('tag').textContent=boxed&&d?`로맨스 ${f2(d.sh)}%`:'';
+  $('ref').style.opacity=boxed?1:0;$('other').style.opacity=boxed?1:0;
+  $('read').style.opacity=d?1:0;
+  if(d){$('ry').textContent=d.y;$('re').textContent=f1(d.epu);$('rr').textContent=f2(d.sh)+'%';
+    $('be').style.transform=`scaleX(${d.epu/EMAX})`;$('br').style.transform=`scaleX(${d.sh/10})`;}
+  document.querySelector('.m-fog').style.opacity=mode==='share'?.3:1;
+  document.querySelector('.m-rom').style.opacity=mode==='fog'?.3:1;
+}
+function setCaption(t,s,fade){
+  const L=$('line'),put=()=>{$('ct').textContent=t;$('cs').textContent=s};
+  if(!fade||reduce)return put();
+  L.classList.add('swap');setTimeout(()=>{put();L.classList.remove('swap')},170);
+}
+const steps=[...document.querySelectorAll('.step')],chBtns=[...document.querySelectorAll('#chapters button')];
+let curStep=null;
+function onScroll(){
+  const mid=innerHeight*.5;
+  const st=steps.find(s=>{const r=s.getBoundingClientRect();return r.top<=mid&&r.bottom>mid})||(steps[0].getBoundingClientRect().top>mid?steps[0]:steps.at(-1));
+  let idx=null,t,s;
+  if('sweep' in st.dataset){
+    const r=st.getBoundingClientRect();idx=Math.max(0,Math.min(15,Math.floor((mid-r.top)/r.height*16)));
+    [t,s]=SWEEP[st.dataset.mode](D[idx]);
+  }else{
+    if(st.dataset.year)idx=D.findIndex(d=>d.y==st.dataset.year);
+    if('resid' in st.dataset)[t,s]=residText(D[idx],st.dataset.extra);
+    else{t=st.querySelector('.t').textContent;s=st.querySelector('.s')?.textContent||''}
+  }
+  $('key').hidden=!('key' in st.dataset);
+  if(st!==curStep){setCaption(t,s,curStep!==null);curStep=st}else if('sweep' in st.dataset)setCaption(t,s,false);
+  const ch=+st.dataset.ch;chBtns.forEach((b,i)=>{b.classList.toggle('on',i+1===ch);b.classList.toggle('done',i+1<ch)});
+  render(st.dataset.mode,idx);
+}
+// 스크린 리더용: 잔차 장면의 문장을 단계 안에도 넣는다
+steps.filter(s=>'resid' in s.dataset).forEach(s=>{const[t,x]=residText(D.find(d=>d.y==s.dataset.year),s.dataset.extra);
+  s.innerHTML=`<h2 class="sr">${t}</h2><p class="sr">${x}</p>`});
+addEventListener('scroll',()=>requestAnimationFrame(onScroll),{passive:true});onScroll();
+chBtns.forEach(b=>b.onclick=()=>{const s=steps.find(s=>s.dataset.ch===b.dataset.go);scrollTo({top:s.getBoundingClientRect().top+scrollY+2})});
+$('totop').onclick=()=>{scrollTo({top:0});$('finding').focus({preventScroll:true})};
+$('finding').tabIndex=-1;
+
+// 산점도 + 경향선 + 툴팁, 표
+function drawScatter(){
+  const s=$('scatter'),VW=Math.max(330,Math.min(1120,s.parentElement.clientWidth)),VH=VW<560?380:440,L=48,T=30,W=VW-L-24,H=VH-T-70,xs=v=>L+v/550*W,ys=v=>T+H-v/10*H;let g='';
+  s.setAttribute('viewBox',`0 0 ${VW} ${VH}`);
+  for(let v=0;v<=500;v+=100)g+=`<line x1="${xs(v)}" x2="${xs(v)}" y1="${T}" y2="${T+H}" stroke="#d9d8e2"/><text x="${xs(v)}" y="${T+H+22}" text-anchor="middle">${v}</text>`;
+  for(let v=0;v<=10;v+=2)g+=`<line x1="${L}" x2="${L+W}" y1="${ys(v)}" y2="${ys(v)}" stroke="#d9d8e2"/><text x="${L-10}" y="${ys(v)+4}" text-anchor="end">${v}%</text>`;
+  const x0=70,x1=500;
+  g+=`<line x1="${xs(x0)}" y1="${ys(P.a+P.b*x0)}" x2="${xs(x1)}" y2="${ys(Math.max(0,P.a+P.b*x1))}" stroke="#4a4c66" stroke-width="1.5" stroke-dasharray="6 5"/>`;
+  g+=`<text x="${xs(390)}" y="${ys(P.a+P.b*390)-10}" text-anchor="middle">경향선</text>`; // 300~500 사이는 점이 없는 구간
+  const LAB={2012:[11,5],2014:[11,5],2020:[-11,20,'end'],2023:[6,22],2025:[0,-14,'middle'],2010:[11,-8]};
+  D.forEach(d=>{const hi=TOP.includes(d.y),cxp=xs(d.epu),cyp=ys(d.sh),lb=LAB[d.y];
+    g+=`<g data-y="${d.y}"><circle class="hit" r="14" cx="${cxp}" cy="${cyp}" tabindex="0" aria-label="${d.y}년, EPU ${f1(d.epu)}, 로맨스 점유율 ${f2(d.sh)}%"/>`+
+      `<circle class="dot" cx="${cxp}" cy="${cyp}" r="${hi?7:5.5}" fill="${hi?'#b8304d':'#1b1d36'}" stroke="#e9e8ec" stroke-width="2" pointer-events="none"/>`+
+      (lb?`<text class="lab" x="${cxp+lb[0]}" y="${cyp+lb[1]}" text-anchor="${lb[2]||'start'}" pointer-events="none">${d.y}</text>`:'')+`</g>`});
+  g+=`<text x="${L+W}" y="${T+H+48}" text-anchor="end">연평균 EPU (경제정책 불확실성 지수)</text><text x="${L-10}" y="${T-12}">멜로/로맨스 매출 점유율</text>`;
+  s.innerHTML=g;
+  const tip=$('tip'),box=s.parentElement,rows={};
+  if(!$('tbl').tBodies[0].rows.length)$('tbl').tBodies[0].innerHTML=D.map(d=>`<tr data-y="${d.y}" class="${TOP.includes(d.y)?'x':''}"><td>${d.y}</td><td>${eok(d.tot)}</td><td>${f1(d.epu)}</td><td>${eok(d.rom)}</td><td>${f2(d.sh)}%</td><td>${sgn(d.res,f2)}%p</td></tr>`).join('');
+  $('tbl').querySelectorAll('tr[data-y]').forEach(r=>rows[r.dataset.y]=r);
+  function show(gEl){const d=D.find(o=>o.y==gEl.dataset.y),c=gEl.querySelector('.dot'),bb=c.getBoundingClientRect(),pb=box.getBoundingClientRect();
+    s.querySelectorAll('g.on').forEach(e=>e.classList.remove('on'));gEl.classList.add('on');
+    Object.values(rows).forEach(r=>r.classList.remove('on'));rows[d.y].classList.add('on');
+    tip.innerHTML=`<b>${d.y}년</b><br>EPU ${f1(d.epu)}<br>로맨스 점유율 ${f2(d.sh)}%<br>경향선과의 차이 ${sgn(d.res,f2)}%p`;
+    let x=bb.left-pb.left+box.scrollLeft+14,y=bb.top-pb.top-10;tip.classList.add('on');
+    if(x+tip.offsetWidth>box.scrollWidth)x-=tip.offsetWidth+28;tip.style.left=x+'px';tip.style.top=Math.max(0,y)+'px'}
+  function hide(){tip.classList.remove('on');s.querySelectorAll('g.on').forEach(e=>e.classList.remove('on'));Object.values(rows).forEach(r=>r.classList.remove('on'))}
+  s.querySelectorAll('g[data-y]').forEach(gEl=>{const h=gEl.querySelector('.hit');
+    h.addEventListener('pointerenter',()=>show(gEl));h.addEventListener('pointerleave',hide);
+    h.addEventListener('focus',()=>show(gEl));h.addEventListener('blur',hide)});
+}
+drawScatter();let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(drawScatter,150)});
+</script>
+</body>
+</html>

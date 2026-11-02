@@ -60,22 +60,10 @@ tr.x td{background:#f3dde2} tr.on td{background:#dcdbe6}
 .src{padding-left:1.1em;margin:0;font-size:16px;color:var(--ink);columns:2 320px;column-gap:56px}
 .src li{margin-bottom:12px;break-inside:avoid}
 .src a{word-break:break-all}
-.handoff{background:var(--night);color:var(--text)}
-.handoff div{max-width:var(--w);margin:0 auto;padding-block:96px 24px}
-.handoff p{font:600 clamp(20px,2.4vw,28px)/1.5 var(--f-cap);margin:0;max-width:24em;text-wrap:balance}
-.handoff span{display:block;font:400 16px/1.7 var(--f-body);color:var(--dim);margin-top:10px}
 
 /* ── 아래: 극장 ───────────────────────── */
 .scrolly{position:relative;background:var(--night);color:var(--text)}
 .stage{position:sticky;top:0;height:100vh;height:100svh;display:flex;flex-direction:column;overflow:hidden}
-.chapters{display:flex;gap:6px;padding-block:14px 8px;max-width:var(--w);width:100%;margin:0 auto}
-.chapters button{flex:1;min-width:0;background:none;border:0;border-top:2px solid var(--rule);color:var(--dim);
-  font:500 13px/1.3 var(--f-body);text-align:left;padding:8px 0 0;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  transition:color .2s,border-color .2s}
-.chapters button.on{border-color:var(--rose);color:var(--text)}
-.chapters button.done{border-color:#6a6d92}
-.chapters button:focus-visible{outline-color:var(--rose)}
-@media (hover:hover){.chapters button:hover{color:var(--text)}}
 
 .theater{position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
 .curtain{position:absolute;top:0;bottom:0;width:9%;z-index:1;overflow:hidden;background:#5e1a2c}
@@ -84,7 +72,7 @@ tr.x td{background:#f3dde2} tr.on td{background:#dcdbe6}
 .curtain.r{right:0;border-radius:0 0 0 60%/0 0 0 18%}
 .valance{position:absolute;top:0;left:0;right:0;height:16px;z-index:2;background:#3f0f1c}
 .screen{position:relative;z-index:0;aspect-ratio:16/9;width:min(78%,calc((100svh - 330px) * 16 / 9));max-width:100%;background:#262944}
-.screen .other{position:absolute;left:10px;top:8px;font-size:13px;color:#a3a6c6;transition:opacity .5s}
+.screen .other{position:absolute;left:14px;top:10px;font-size:13px;color:#a3a6c6;transition:opacity .5s}
 .film{position:absolute;left:50%;top:50%;aspect-ratio:16/9;transform:translate(-50%,-50%);width:100%;transition:width 1s var(--ease)}
 .film svg{display:block;width:100%;height:100%}
 .film.boxed{outline:1.5px solid var(--rose)}
@@ -107,20 +95,29 @@ tr.x td{background:#f3dde2} tr.on td{background:#dcdbe6}
 .line.swap{opacity:0;filter:blur(3px)}
 .line .t{font:600 clamp(21px,2.4vw,30px)/1.45 var(--f-cap);margin:0 0 8px;text-wrap:balance;max-width:28em}
 .line .s{margin:0;color:#d2d1dd;max-width:42em;font-size:clamp(14px,1.2vw,16px)}
-
-.key{display:flex;flex-wrap:wrap;gap:16px 40px;margin-top:16px}
-.key[hidden]{display:none}
-.k-row{display:grid;gap:8px}
-.k-lab{margin:0;font-size:14px;color:var(--text);font-weight:500}
-.k-set{display:flex;gap:10px;align-items:flex-end}
-.k-set figure{margin:0;display:grid;gap:4px;justify-items:center;font-size:13px;color:var(--dim);font-variant-numeric:tabular-nums}
-.k-sw{width:52px;aspect-ratio:16/9;position:relative;background:#c06f8e}
-.k-sw i{position:absolute;inset:0;background:#d7dbe6}
-.k-scr{width:72px;aspect-ratio:16/9;position:relative;background:#363a5c}
-.k-scr i{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);aspect-ratio:16/9;background:#c06f8e;outline:1px solid var(--rose)}
+.enc{background:var(--paper)}
+.enc-in{max-width:var(--w);margin:0 auto;padding-block:16px 96px}
+.enc h2{font:700 22px/1.4 var(--f-cap);margin:0 0 24px}
+.enc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:48px 56px}
+.eq{font:700 clamp(26px,3.2vw,38px)/1.3 var(--f-cap);letter-spacing:-.02em;margin:0 0 8px}
+.rule{margin:0 0 20px;color:var(--ink2);font-size:16px;max-width:32em}
+.enc-go{margin:48px 0 0;color:var(--ink)}
+.thumbs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.thumbs figure{margin:0}
+.thumbs figcaption{font-size:14px;margin-top:8px;font-variant-numeric:tabular-nums}
+.thumbs figcaption span{display:block;color:var(--ink2);font-size:13px;min-height:1.5em}
+.th{position:relative;aspect-ratio:16/9;overflow:hidden;background:#262944}
+.th>svg{display:block;width:100%;height:100%}
+.th canvas{position:absolute;inset:0;width:100%;height:100%}
+.th .mini{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);aspect-ratio:16/9;outline:1.5px solid var(--rose)}
+.th .mini svg{display:block;width:100%;height:100%}
+.ruler{display:grid;grid-template-columns:repeat(16,minmax(0,1fr));gap:4px;max-width:var(--w);width:100%;margin:0 auto;padding-block:14px 8px}
+.ruler span{border-top:2px solid var(--rule);padding-top:6px;font-size:13px;color:var(--dim);text-align:center;transition:color .2s,border-color .2s}
+.ruler span.done{border-color:#6a6d92}
+.ruler span.on{border-color:var(--rose);color:var(--text);font-weight:700}
+@media (max-width:760px){.enc-grid{grid-template-columns:minmax(0,1fr)}.ruler{gap:2px}}
 .steps{position:relative;margin-top:-100vh;margin-top:-100svh;pointer-events:none}
-.step{height:100vh;height:100svh}
-.step[data-sweep]{height:calc(16 * 26svh)}
+.step{height:70vh;height:70svh}
 .outro{background:var(--night);color:var(--dim);font-size:16px}
 .outro div{max-width:var(--w);margin:0 auto;padding-block:40px 64px}
 .outro button{font:500 16px var(--f-body);color:var(--text);background:#262944;border:0;border-radius:999px;padding:10px 18px;cursor:pointer;transition:transform .16s var(--ease)}
@@ -135,7 +132,6 @@ tr.x td{background:#f3dde2} tr.on td{background:#dcdbe6}
   .read{grid-template-columns:auto minmax(0,1fr);align-items:center;gap:6px 18px}
   .read .y{grid-row:span 2}
   .read .y{font-size:28px}
-  .chapters button{font-size:13px;white-space:normal;line-height:1.25}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition-duration:.01ms!important}}
 </style>
@@ -179,16 +175,22 @@ tr.x td{background:#f3dde2} tr.on td{background:#dcdbe6}
   </section>
 </section>
 
-<div class="handoff gut"><div>
-  <p>아래에서는 같은 16년을 한 극장 안에 옮긴다.</p>
-  <span>안개의 농도는 EPU를, 스크린에 비친 로맨스 영화의 넓이는 로맨스 점유율을 나타낸다. 스크롤하면 장면과 연도가 바뀐다.</span>
-</div></div>
+<section class="enc gut" aria-labelledby="h-enc"><div class="enc-in">
+  <h2 id="h-enc">시각 인코딩</h2>
+  <div class="enc-grid">
+    <div><p class="eq">EPU = 안개</p>
+      <p class="rule">안개의 농도는 그해 EPU에 비례한다. 16년 중 최댓값(529.0)일 때 가장 짙다.</p>
+      <div class="thumbs" id="encFog"></div></div>
+    <div><p class="eq">로맨스 점유율 = 스크린 크기</p>
+      <p class="rule">스크린 전체가 그해 극장 매출 100%다. 그 안에 비친 로맨스 영화 화면의 넓이가 점유율이다.</p>
+      <div class="thumbs" id="encSize"></div></div>
+  </div>
+  <p class="rule enc-go">아래 극장에서는 2010년부터 2025년까지 한 해씩, 두 인코딩을 겹쳐 보여 준다.</p>
+</div></section>
 
 <div class="scrolly">
   <div class="stage">
-    <nav class="chapters gut" id="chapters" aria-label="극장 장면 이동">
-      <button data-go="1">극장과 인코딩</button><button data-go="2">16년 함께 보기</button><button data-go="3">경향선과 먼 해</button>
-    </nav>
+    <div class="ruler gut" id="ruler" aria-hidden="true"></div>
     <div class="theater" role="img" aria-label="극장 스크린. 로맨스 영화 화면의 넓이는 로맨스 매출 점유율, 극장을 덮은 안개의 농도는 경제정책 불확실성 지수를 나타낸다.">
       <div class="valance"></div><div class="curtain l"></div><div class="curtain r"></div>
       <div class="screen">
@@ -224,31 +226,11 @@ tr.x td{background:#f3dde2} tr.on td{background:#dcdbe6}
         <div class="meter m-fog"><span>EPU</span><b class="n" id="re"></b><span class="bar"><i id="be"></i></span></div>
         <div class="meter m-rom"><span>로맨스 점유율</span><b class="n" id="rr"></b><span class="bar"><i id="br"></i></span></div>
       </div>
-      <div class="line" id="line"><p class="t" id="ct"></p><p class="s" id="cs"></p>
-        <div class="key" id="key" hidden>
-          <div class="k-row"><p class="k-lab">안개 농도 = EPU ÷ 529.0</p><div class="k-set" id="kFog"></div></div>
-          <div class="k-row"><p class="k-lab">화면 넓이 = 로맨스 점유율</p><div class="k-set" id="kSize"></div></div>
-        </div></div>
+      <div class="line" id="line"><p class="t" id="ct"></p><p class="s" id="cs"></p></div>
     </div>
   </div>
 
-  <div class="steps" id="steps">
-    <section class="step" data-ch="1" data-mode="intro">
-      <h2 class="t sr">스크린에서 로맨스 영화가 상영되고 있다.</h2>
-      <p class="s sr">이 극장에서 2010년부터 2025년까지 한국 극장의 멜로/로맨스 영화 매출과 경제정책 불확실성 지수를 함께 본다.</p></section>
-    <section class="step" data-ch="1" data-mode="both" data-year="2010" data-key>
-      <h2 class="t sr">안개의 농도는 EPU를, 로맨스 화면의 넓이는 로맨스 점유율을 나타낸다.</h2>
-      <p class="s sr">스크린 전체가 그해 극장 매출 100%다. 안개 농도는 그해 EPU를 16년 중 최댓값 529.0으로 나눈 값에 비례하고, 로맨스 화면의 넓이는 점유율에 비례한다. 지금 화면은 2010년 값이다.</p></section>
-    <section class="step" data-ch="2" data-mode="both" data-sweep>
-      <h2 class="t sr">2010년부터 2025년까지 연도별 EPU와 로맨스 점유율</h2></section>
-
-    <section class="step" data-ch="3" data-mode="both" data-year="2012" data-resid></section>
-    <section class="step" data-ch="3" data-mode="both" data-year="2020" data-resid
-      data-extra="같은 해 극장 전체 매출은 2019년 1조 9,140억 원에서 5,104억 원으로 줄었다. 코로나19가 유행한 첫해다."></section>
-    <section class="step" data-ch="3" data-mode="both" data-year="2023" data-resid></section>
-    <section class="step" data-ch="3" data-mode="both" data-year="2025" data-resid
-      data-extra="2025년 EPU는 16년 중 가장 높다. 직선 경향선을 이 값까지 늘리면 점유율이 0% 아래를 가리킨다."></section>
-  </div>
+  <div class="steps" id="steps"></div>
 </div>
 
 <footer class="outro gut"><div>
@@ -294,30 +276,20 @@ const R14=pearson(...[X,Y].map(a=>a.filter((_,i)=>![2012,2025].includes(D[i].y))
 console.assert(Math.abs(R14+0.8609)<1e-3,'r14',R14);
 $('r14').textContent=minus(R14.toFixed(2));
 
-// 극장 자막: 해석 없이 값·순위·전년 대비만
+// 극장 자막: 해석 없이 값·변화·순위만. 경향선과 먼 네 해는 차이를 덧붙임
 const prev=d=>D[D.indexOf(d)-1];
-const ordinal=n=>n===1?'가장 높다':`${n}번째로 높다`;
-const SWEEP={
-  fog:d=>[`${d.y}년 EPU ${f1(d.epu)}`,
-    (prev(d)?`전년 대비 ${sgn(d.epu-prev(d).epu,f1)}. `:'자료의 첫해. ')+`16년 중 ${ordinal(d.rE)}.`],
-  share:d=>[`${d.y}년 로맨스 점유율 ${f2(d.sh)}%`,
-    (prev(d)?`전년 대비 ${sgn(d.sh-prev(d).sh,f2)}%p. `:'자료의 첫해. ')+`로맨스 매출 ${eok(d.rom)}억 원, 극장 전체 매출 ${eok(d.tot)}억 원.`],
-  both:d=>[`${d.y}년 EPU ${f1(d.epu)}, 로맨스 점유율 ${f2(d.sh)}%`,
-    `16년 중 EPU는 ${ordinal(d.rE)}. 로맨스 점유율은 ${ordinal(d.rS)}.`]
-};
-function residText(d,extra){
-  return[`${d.y}년, 경향선과의 차이 ${sgn(d.res,f2)}%p`,
-    `EPU ${f1(d.epu)}에서 경향선이 가리키는 점유율은 ${minus(f2(d.fit))}%이고, 실제 점유율은 ${f2(d.sh)}%다. 16년 중 차이의 크기가 ${TOP.indexOf(d.y)+1}번째로 크다.`+(extra?' '+extra:'')];
+const EXTRA={2020:'같은 해 극장 전체 매출은 2019년 1조 9,140억 원에서 5,104억 원으로 줄었다. 코로나19가 유행한 첫해다.'};
+function yearText(d){const p=prev(d);
+  let s=(p?`전년 대비 EPU ${sgn(d.epu-p.epu,f1)}, 로맨스 점유율 ${sgn(d.sh-p.sh,f2)}%p. `:'자료의 첫해. ')+`16년 중 순위(높은 순)는 EPU ${d.rE}위, 로맨스 점유율 ${d.rS}위.`;
+  if(TOP.includes(d.y))s+=` 경향선이 이 EPU에서 가리키는 점유율은 ${minus(f2(d.fit))}%로, 실제 값과 ${sgn(d.res,f2)}%p 차이 난다. 16년 중 ${TOP.indexOf(d.y)+1}번째로 큰 차이다.`;
+  if(EXTRA[d.y])s+=' '+EXTRA[d.y];
+  return[`${d.y}년 EPU ${f1(d.epu)}, 로맨스 점유율 ${f2(d.sh)}%`,s];
 }
 
 // 커튼: 단색 주름 띠(그라디언트 없이)
 document.querySelectorAll('.curtain,.valance').forEach(el=>{const C=['#4a1322','#7a2639','#5e1a2c','#3f0f1c'];let g='';
   for(let i=0;i<40;i++)g+=`<rect x="${i*10}" y="0" width="10" height="100" fill="${C[i%4]}"/>`;
   el.innerHTML=`<svg viewBox="0 0 ${el.classList.contains('valance')?400:100} 100" preserveAspectRatio="none" aria-hidden="true">${g}</svg>`});
-
-// 인코딩 범례: 안개는 실제 렌더와 같은 비율(선형)로, 화면은 √점유율 변 길이로
-$('kFog').innerHTML=[0,132,265,397,529].map(v=>`<figure><span class="k-sw"><i style="opacity:${(v/EMAX*.85).toFixed(2)}"></i></span><figcaption>${v}</figcaption></figure>`).join('');
-$('kSize').innerHTML=[1,5,10].map(v=>`<figure><span class="k-scr"><i style="width:${Math.sqrt(v/100)*100}%"></i></span><figcaption>${v}%</figcaption></figure>`).join('');
 
 // 객석 의자
 (function(){let g='';for(let row=0;row<2;row++){const y=row?40:14,w=row?62:48,step=row?70:56,off=row?-10:14;
@@ -335,19 +307,29 @@ const tex=document.createElement('canvas');tex.width=640;tex.height=320;
 function fit(){const r=cv.getBoundingClientRect();cv.width=Math.max(1,r.width*devicePixelRatio);cv.height=Math.max(1,r.height*devicePixelRatio)}
 addEventListener('resize',fit);fit();
 let fogNow=0,fogTarget=0,o1=0,o2=0;
-function layer(off,scale,alpha){const w=cv.width*scale,h=cv.height;cx.globalAlpha=alpha;
-  for(let x=-(off%w);x<cv.width;x+=w)cx.drawImage(tex,x,0,w,h)}
+function paintFog(c,d,a,b){const x=c.getContext('2d'),W=c.width,H=c.height;x.clearRect(0,0,W,H);if(d<=.004)return;
+  const layer=(off,scale,alpha)=>{const w=W*scale;x.globalAlpha=alpha;for(let p=-(off%w);p<W;p+=w)x.drawImage(tex,p,0,w,H)};
+  x.globalAlpha=d*.55;x.fillStyle='#d7dbe6';x.fillRect(0,0,W,H); // 바탕 뿌연 층
+  layer(a,1.2,d*.9);layer(b+300,.8,d*.7);x.globalAlpha=1; // 선형: 농도 2배 = 불투명도 2배
+}
 (function loop(){
   fogNow+=(fogTarget-fogNow)*.05;
-  cx.clearRect(0,0,cv.width,cv.height);
-  if(fogNow>.004){
-    if(!reduce){o1+=.25;o2+=.6}
-    cx.globalAlpha=fogNow*.55;cx.fillStyle='#d7dbe6';cx.fillRect(0,0,cv.width,cv.height);
-    layer(o1,1.2,fogNow*.9);layer(o2+300,.8,fogNow*.7); // 선형: 농도 2배 = 불투명도 2배
-    cx.globalAlpha=1;
-  }
+  if(!reduce&&fogNow>.004){o1+=.25;o2+=.6}
+  paintFog(cv,fogNow,o1,o2);
   requestAnimationFrame(loop);
 })();
+
+// 시각 인코딩 범례: 극장과 같은 장면, 같은 안개 함수로 그린다
+const SCENE=document.querySelector('#film svg');
+const NOTE={2014:'16년 중 최저',2025:'16년 중 최고',2023:'16년 중 최저',2012:'16년 중 최고'};
+const fig=(y,inner,cap)=>`<figure>${inner}<figcaption>${cap}<span>${NOTE[y]||''}</span></figcaption></figure>`;
+$('encFog').innerHTML=[2014,2019,2025].map(y=>{const d=D.find(o=>o.y===y);return fig(y,`<div class="th" data-fog="${d.epu/EMAX}"></div>`,`${y}년 EPU ${f1(d.epu)}`)}).join('');
+$('encSize').innerHTML=[2023,2010,2012].map(y=>{const d=D.find(o=>o.y===y);return fig(y,`<div class="th"><div class="mini" style="width:${Math.sqrt(d.sh/100)*100}%"></div></div>`,`${y}년 점유율 ${f2(d.sh)}%`)}).join('');
+document.querySelectorAll('#encFog .th').forEach(el=>el.append(SCENE.cloneNode(true),document.createElement('canvas')));
+document.querySelectorAll('#encSize .mini').forEach(el=>el.append(SCENE.cloneNode(true)));
+function drawEnc(){document.querySelectorAll('#encFog .th').forEach(el=>{const c=el.querySelector('canvas'),r=el.getBoundingClientRect();
+  c.width=Math.max(1,r.width*devicePixelRatio);c.height=Math.max(1,r.height*devicePixelRatio);paintFog(c,+el.dataset.fog,0,0)})}
+drawEnc();addEventListener('resize',drawEnc);
 
 // 장면 렌더
 let last='';
@@ -370,30 +352,21 @@ function setCaption(t,s,fade){
   if(!fade||reduce)return put();
   L.classList.add('swap');setTimeout(()=>{put();L.classList.remove('swap')},170);
 }
-const steps=[...document.querySelectorAll('.step')],chBtns=[...document.querySelectorAll('#chapters button')];
-let curStep=null;
+const stepsEl=$('steps'),ruler=$('ruler');
+D.forEach(d=>{const[t,x]=yearText(d);
+  stepsEl.insertAdjacentHTML('beforeend',`<section class="step"><h2 class="sr">${t}</h2><p class="sr">${x}</p></section>`);
+  ruler.insertAdjacentHTML('beforeend',`<span>${String(d.y).slice(2)}</span>`)});
+const steps=[...stepsEl.children],ticks=[...ruler.children];
+let cur=null;
 function onScroll(){
   const mid=innerHeight*.5;
-  const st=steps.find(s=>{const r=s.getBoundingClientRect();return r.top<=mid&&r.bottom>mid})||(steps[0].getBoundingClientRect().top>mid?steps[0]:steps.at(-1));
-  let idx=null,t,s;
-  if('sweep' in st.dataset){
-    const r=st.getBoundingClientRect();idx=Math.max(0,Math.min(15,Math.floor((mid-r.top)/r.height*16)));
-    [t,s]=SWEEP[st.dataset.mode](D[idx]);
-  }else{
-    if(st.dataset.year)idx=D.findIndex(d=>d.y==st.dataset.year);
-    if('resid' in st.dataset)[t,s]=residText(D[idx],st.dataset.extra);
-    else{t=st.querySelector('.t').textContent;s=st.querySelector('.s')?.textContent||''}
-  }
-  $('key').hidden=!('key' in st.dataset);
-  if(st!==curStep){setCaption(t,s,curStep!==null);curStep=st}else if('sweep' in st.dataset)setCaption(t,s,false);
-  const ch=+st.dataset.ch;chBtns.forEach((b,i)=>{b.classList.toggle('on',i+1===ch);b.classList.toggle('done',i+1<ch)});
-  render(st.dataset.mode,idx);
+  let i=steps.findIndex(s=>{const r=s.getBoundingClientRect();return r.top<=mid&&r.bottom>mid});
+  if(i<0)i=steps[0].getBoundingClientRect().top>mid?0:steps.length-1;
+  if(i!==cur){const[t,x]=yearText(D[i]);setCaption(t,x,cur!==null);cur=i;
+    ticks.forEach((k,j)=>{k.classList.toggle('on',j===i);k.classList.toggle('done',j<i)})}
+  render('both',i);
 }
-// 스크린 리더용: 잔차 장면의 문장을 단계 안에도 넣는다
-steps.filter(s=>'resid' in s.dataset).forEach(s=>{const[t,x]=residText(D.find(d=>d.y==s.dataset.year),s.dataset.extra);
-  s.innerHTML=`<h2 class="sr">${t}</h2><p class="sr">${x}</p>`});
 addEventListener('scroll',()=>requestAnimationFrame(onScroll),{passive:true});onScroll();
-chBtns.forEach(b=>b.onclick=()=>{const s=steps.find(s=>s.dataset.ch===b.dataset.go);scrollTo({top:s.getBoundingClientRect().top+scrollY+2})});
 $('totop').onclick=()=>{scrollTo({top:0});$('finding').focus({preventScroll:true})};
 $('finding').tabIndex=-1;
 

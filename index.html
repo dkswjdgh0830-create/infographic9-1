@@ -41,12 +41,22 @@ h1,h2,.head{font-weight:600;letter-spacing:-.035em;line-height:1.12;text-wrap:ba
 .btn:active{transform:scale(.97)}
 @media (hover:hover){.btn:hover{background:#0f37b5}}
 
-/* ── 첫 화면: 밀착 인화지 ───────────── */
-.hero{padding-block:28px 56px}
-.meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 24px;font-size:var(--s-small);color:var(--muted);margin-bottom:clamp(28px,5vh,56px)}
-.meta b{display:block;color:var(--ink);font-weight:500}
-.hero h1{font-size:var(--s-head);max-width:19em;margin-bottom:28px}
-.sheet{background:var(--film);color:var(--film-ink);padding:22px clamp(14px,2vw,26px) 18px;position:relative}
+/* ── 첫 화면: 사진 + 실제 EPU로 바뀌는 안개 ───────────── */
+.cover{position:relative;min-height:88vh;min-height:88svh;display:flex;align-items:flex-end;background:#000;color:#fff;overflow:hidden}
+.cover-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:60% 50%}
+#coverFog{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.cover::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.72),rgba(0,0,0,0) 62%);pointer-events:none} /* 글자 아래 중립 스크림 */
+.cover-in{position:relative;z-index:2;width:100%;padding-block:0 clamp(40px,7vh,72px)}
+.cover h1{font-size:clamp(28px,.9rem + 3.3vw,64px);max-width:20em;margin:0 0 28px}
+.cover-act{display:flex;flex-wrap:wrap;align-items:center;gap:16px 24px}
+.cover-act p{margin:0;max-width:36em;color:rgba(255,255,255,.82)}
+.cover-yr{position:absolute;z-index:2;top:max(22px,env(safe-area-inset-top,0px));right:max(clamp(16px,3vw,40px),env(safe-area-inset-right,0px));
+  margin:0;font-size:var(--s-small);color:rgba(255,255,255,.85);text-align:right;font-variant-numeric:tabular-nums}
+.cover-yr b{display:block;font-size:clamp(28px,3vw,44px);font-weight:600;letter-spacing:-.04em;line-height:1.1;color:#fff}
+.sheet-sec{background:var(--film);color:var(--film-ink);padding-block:clamp(40px,6vh,64px) clamp(56px,8vh,88px)}
+.sheet-sec h2{font-size:var(--s-lead);letter-spacing:-.02em;margin-bottom:6px}
+.sheet-sec .hint{color:var(--film-muted)}
+.sheet{background:#000;color:var(--film-ink);padding:22px clamp(14px,2vw,26px) 18px;position:relative}
 .sprockets{display:flex;justify-content:space-between;gap:6px;height:8px;margin:0 0 14px}
 .sprockets.b{margin:16px 0 0}
 .sprockets i{flex:1;max-width:14px;background:#2c2c2c;border-radius:2px}
@@ -62,13 +72,11 @@ h1,h2,.head{font-weight:600;letter-spacing:-.035em;line-height:1.12;text-wrap:ba
 .frame .mark{position:absolute;left:-9%;top:-16%;width:118%;height:132%;pointer-events:none;overflow:visible}
 .frame:focus-visible{outline:2px solid #fff;outline-offset:4px}
 @media (hover:hover){.frames:hover .frame{opacity:.55}.frames .frame:hover{opacity:1}.frame{transition:opacity .2s}}
-.legend{display:flex;flex-wrap:wrap;align-items:center;gap:10px 28px;margin-top:18px;font-size:var(--s-small);color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;align-items:center;gap:10px 28px;margin-top:18px;font-size:var(--s-small);color:var(--film-muted)}
 .legend .pen{display:inline-block;width:30px;height:16px;vertical-align:-4px;margin-right:6px}
-.hero-act{display:flex;flex-wrap:wrap;align-items:center;gap:16px 24px;margin-top:28px}
-.hero-act p{margin:0;max-width:40em}
 
 /* ── 관계: 소수점에 맞춘 장부 ───────────── */
-.ledger{padding-block:clamp(72px,12vh,140px) 40px}
+.ledger{background:var(--surface);padding-block:clamp(72px,12vh,140px) clamp(72px,10vh,120px)}
 .lg{display:grid;grid-template-columns:5fr 7fr;gap:40px;align-items:center}
 .lg h2{font-size:var(--s-head)}
 .lg h2 span{display:block;color:var(--muted)}
@@ -106,7 +114,8 @@ tr.x td{background:var(--pencil-soft)} tr.on td{background:var(--surface)}
 .src a{word-break:break-all}
 
 /* ── 시각 인코딩 ───────────── */
-.enc{padding-block:clamp(72px,10vh,120px) clamp(72px,10vh,120px)}
+.enc{background:var(--film);color:var(--film-ink);padding-block:clamp(72px,10vh,120px) clamp(40px,6vh,64px);margin-top:clamp(72px,10vh,120px)}
+.enc .rule,.enc .thumbs figcaption span{color:var(--film-muted)}
 .enc-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:48px 56px;margin-top:24px}
 .eq{font-size:clamp(26px,1rem + 1.8vw,40px);font-weight:600;letter-spacing:-.035em;line-height:1.15;margin:0 0 8px}
 .rule{margin:0 0 20px;color:var(--muted);font-size:16px;max-width:34em}
@@ -153,7 +162,8 @@ tr.x td{background:var(--pencil-soft)} tr.on td{background:var(--surface)}
 .foot a{color:var(--film-ink)}
 
 @media (max-width:820px){
-  .meta{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cover{min-height:80svh}
+  .cover-img{object-position:70% 50%}
   .frames{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 10px}
   .lg,.notes{grid-template-columns:minmax(0,1fr)}
   .notes div{grid-column:1}
@@ -171,30 +181,32 @@ tr.x td{background:var(--pencil-soft)} tr.on td{background:var(--surface)}
 </head>
 <body>
 <main>
-<section class="hero gut" aria-labelledby="finding">
-  <div class="wrap">
-    <div class="meta">
-      <div><b>기간</b>2010~2025년, 16개 연도</div>
-      <div><b>비교한 두 값</b>경제정책 불확실성 지수(EPU), 멜로/로맨스 극장 매출 점유율</div>
-      <div><b>출처</b>KOBIS 박스오피스, Baker·Bloom·Davis 한국 EPU</div>
-      <div><b>상관계수</b><span class="n" id="rTop">r = −0.475</span></div>
-    </div>
+<section class="cover" aria-labelledby="finding">
+  <img class="cover-img" src="assets/lovers.jpg" width="1600" height="1000" alt="밤 운하 앞에 앉은 두 사람의 실루엣">
+  <canvas id="coverFog"></canvas>
+  <p class="cover-yr" aria-live="off"><span>지금 안개의 농도</span><b class="n" id="coverY">2010</b><span class="n" id="coverE">EPU 148.7</span></p>
+  <div class="cover-in gut"><div class="wrap">
     <h1 id="finding">경제적 불확실성이 높아질수록, 로맨스 영화의 흥행 점유율은 낮아지는 경향이 나타났다.</h1>
+    <div class="cover-act">
+      <a class="btn" href="#theater">극장에서 연도별로 보기</a>
+      <p>2010~2025년 한국의 연평균 경제정책 불확실성 지수(EPU)와, 같은 해 극장 매출 가운데 멜로/로맨스 영화가 차지한 비율을 비교했다. 상관계수 r = −0.475.</p>
+    </div>
+  </div></div>
+</section>
 
-    <div class="sheet" role="group" aria-label="16개 연도의 극장 스크린. 프레임을 누르면 아래 극장 장면에서 그 해로 이동한다.">
+<section class="sheet-sec gut" aria-labelledby="h-sheet">
+  <div class="wrap">
+    <h2 id="h-sheet">16년, 16개의 프레임</h2>
+    <p class="hint">프레임 하나가 한 해의 극장 스크린이다. 누르면 아래 극장 장면에서 그 해로 이동한다.</p>
+    <div class="sheet" role="group" aria-label="16개 연도의 극장 스크린">
       <div class="sprockets" aria-hidden="true" id="spT"></div>
       <div class="frames" id="frames"></div>
       <div class="sprockets b" aria-hidden="true" id="spB"></div>
     </div>
     <div class="legend">
-      <span>프레임 하나 = 한 해의 극장 스크린</span>
       <span>안개 농도 = EPU</span>
       <span>로맨스 장면의 넓이 = 극장 매출 중 로맨스 점유율</span>
       <span><svg class="pen" viewBox="0 0 30 16" aria-hidden="true"><ellipse cx="15" cy="8" rx="13" ry="6" fill="none" stroke="#d4322c" stroke-width="2"/></svg>경향선에서 가장 멀리 떨어진 네 해</span>
-    </div>
-    <div class="hero-act">
-      <a class="btn" href="#theater">극장에서 연도별로 보기</a>
-      <p>2010~2025년 한국의 연평균 EPU와, 같은 해 극장 매출 가운데 멜로/로맨스 영화가 차지한 비율을 비교했다.</p>
     </div>
   </div>
 </section>
@@ -316,7 +328,6 @@ D.forEach(d=>{d.fit=P.a+P.b*d.epu;d.res=d.sh-d.fit;
   d.rE=D.filter(o=>o.epu>d.epu).length+1;d.rS=D.filter(o=>o.sh>d.sh).length+1});
 const TOP=[...D].sort((p,q)=>Math.abs(q.res)-Math.abs(p.res)).slice(0,4).map(d=>d.y);
 console.assert(TOP.join()==='2012,2020,2023,2025','top residual years',TOP);
-$('rTop').textContent='r = '+minus(P.r.toFixed(3));
 
 // 안개 텍스처와 그리기 함수: 첫 화면 프레임, 인코딩 견본, 극장이 모두 같은 함수를 쓴다
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -356,10 +367,16 @@ drawStatic();let rz1;addEventListener('resize',()=>{clearTimeout(rz1);rz1=setTim
 // 극장
 const cv=$('fog');sizeCanvas(cv);addEventListener('resize',()=>sizeCanvas(cv));
 let fogNow=0,fogTarget=0,o1=0,o2=0;
+// 첫 화면 안개: 16년의 실제 EPU를 차례로 보여 준다
+const cf=$('coverFog');sizeCanvas(cf);addEventListener('resize',()=>sizeCanvas(cf));
+let cIdx=0,cNow=D[0].epu/EMAX,cTarget=cNow,c1=0,c2=0;
+function coverShow(){const d=D[cIdx];cTarget=d.epu/EMAX;$('coverY').textContent=d.y;$('coverE').textContent='EPU '+f1(d.epu)}
+coverShow();if(!reduce)setInterval(()=>{cIdx=(cIdx+1)%D.length;coverShow()},2600);
 (function loop(){
   fogNow+=(fogTarget-fogNow)*.05;
   if(!reduce&&fogNow>.004){o1+=.25;o2+=.6}
   paintFog(cv,fogNow,o1,o2);
+  if(cf.getBoundingClientRect().bottom>0){cNow+=(cTarget-cNow)*.04;if(!reduce){c1+=.3;c2+=.7}paintFog(cf,cNow,c1,c2)}
   requestAnimationFrame(loop);
 })();
 let last=null;
